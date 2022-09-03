@@ -53,9 +53,14 @@ module.exports = {
   createEvent: async (request, response) => {
     try {
       console.log(request.body);
-      const { name, price } = request.body;
+      const { name, category, location, detail, dateTimeShow, price } =
+        request.body;
       const setData = {
         name,
+        category,
+        location,
+        detail,
+        dateTimeShow,
         price,
       };
 
