@@ -18,5 +18,8 @@ Router.get("/greetings", productController.showGreetings);
 // Path Read
 // Path Update
 // Path Delete
+Router.get("/", productController.getAllProduct);
+Router.get("/:id", productController.getProductById);
+Router.post("/", productController.createProduct);
 
 module.exports = Router;
