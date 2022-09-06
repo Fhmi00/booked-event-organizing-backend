@@ -5,7 +5,7 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const xss = require("xss-clean");
 const compression = require("compression");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 const routerNavigation = require("./routes"); // ./routes/index.js
 
 const app = express();
@@ -16,8 +16,10 @@ app.use(morgan("dev"));
 app.use(helmet());
 app.use(xss());
 app.use(compression());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 // app.get("/greetings", (request, response) => {
 //   response.status(200).send("Hello World!");
