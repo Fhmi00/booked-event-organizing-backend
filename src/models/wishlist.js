@@ -1,11 +1,28 @@
 const supabase = require("../config/supabase");
 
 module.exports = {
-  getAllWishlist: () =>
+  getCountWishlist: () =>
     new Promise((resolve, reject) => {
       supabase
         .from("wishlist")
-        .select("*")
+        .select("*", { count: "exact" })
+        .then((result) => {
+          if (!result.error) {
+            resolve(result.count);
+          } else {
+            reject(result);
+          }
+        });
+    }),
+  getAllWishlist: (offset, limit) =>
+    new Promise((resolve, reject) => {
+      supabase
+        .from("wishlist")
+        .select(
+          `*,
+        event:eventId (name)`
+        )
+        .range(offset, offset + limit - 1)
         .then((result) => {
           if (!result.error) {
             resolve(result);
@@ -19,7 +36,10 @@ module.exports = {
       // SELECT * FROM product WHERE id = "123"
       supabase
         .from("wishlist")
-        .select("*")
+        .select(
+          `*,
+        event:eventId (name)`
+        )
         .eq("id", id)
         .then((result) => {
           if (!result.error) {

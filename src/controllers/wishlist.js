@@ -4,13 +4,28 @@ const wrapper = require("../utils/wrapper");
 module.exports = {
   getAllWishlist: async (request, response) => {
     try {
-      console.log(request.query);
-      const result = await wishlistModel.getAllWishlist();
+      let { page, limit } = request.query;
+      page = +page;
+      limit = +limit;
+
+      const totalData = await wishlistModel.getCountWishlist();
+      const totalPage = Math.ceil(totalData / limit);
+      const pagination = {
+        page,
+        totalPage,
+        limit,
+        totalData,
+      };
+
+      const offset = page * limit - limit;
+
+      const result = await wishlistModel.getAllWishlist(offset, limit);
       return wrapper.response(
         response,
         result.status,
         "Success Get Data !",
-        result.data
+        result.data,
+        pagination
       );
     } catch (error) {
       const {

@@ -20,6 +20,7 @@ module.exports = {
         .from("event")
         .select("*")
         .range(offset, offset + limit - 1)
+        .order("createdAt", { ascending: false })
         .then((result) => {
           if (!result.error) {
             resolve(result);
