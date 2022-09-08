@@ -14,13 +14,14 @@ module.exports = {
           }
         });
     }),
-  getAllEvent: (offset, limit) =>
+  getAllEvent: (offset, limit, name) =>
     new Promise((resolve, reject) => {
       supabase
         .from("event")
         .select("*")
         .range(offset, offset + limit - 1)
         .order("createdAt", { ascending: false })
+        .ilike(`name, %${name}%`)
         .then((result) => {
           if (!result.error) {
             resolve(result);

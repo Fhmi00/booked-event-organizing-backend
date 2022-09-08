@@ -4,7 +4,7 @@ const wrapper = require("../utils/wrapper");
 module.exports = {
   createBooking: async (request, response) => {
     try {
-      console.log(request.body);
+      // console.log(request.body);
       const {
         userId,
         eventId,

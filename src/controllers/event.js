@@ -68,7 +68,7 @@ module.exports = {
   },
   createEvent: async (request, response) => {
     try {
-      console.log(request.body);
+      // console.log(request.body);
       const { name, category, location, detail, dateTimeShow, price } =
         request.body;
       const setData = {
@@ -99,8 +99,8 @@ module.exports = {
   },
   updateEvent: async (request, response) => {
     try {
-      console.log(request.params);
-      console.log(request.body);
+      // console.log(request.params);
+      // console.log(request.body);
       const { id } = request.params;
       const { name, category, location, detail, price } = request.body;
 
