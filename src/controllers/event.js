@@ -2,10 +2,12 @@ const eventModel = require("../models/event");
 const wrapper = require("../utils/wrapper");
 
 module.exports = {
+  // eslint-disable-next-line consistent-return
   getAllEvent: async (request, response) => {
     try {
       //   console.log(request.query);
-      let { page, limit } = request.query;
+      // eslint-disable-next-line prefer-const
+      let { page, limit, name } = request.query;
       page = +page;
       limit = +limit;
 
@@ -20,14 +22,16 @@ module.exports = {
 
       const offset = page * limit - limit;
 
-      const result = await eventModel.getAllEvent(offset, limit);
-      return wrapper.response(
-        response,
-        result.status,
-        "Success Get Data !",
-        result.data,
-        pagination
-      );
+      const result = await eventModel.getAllEvent(offset, limit, name);
+      if (result.data.length < 1) {
+        return wrapper.response(
+          response,
+          result.status,
+          "Success Get Data !",
+          result.data,
+          pagination
+        );
+      }
     } catch (error) {
       const {
         status = 500,

@@ -21,7 +21,7 @@ module.exports = {
         .select("*")
         .range(offset, offset + limit - 1)
         .ilike(`name, %${name}%`)
-        .order("createdAt", { ascending: false })
+        .order("created_at", { ascending: false })
         .then((result) => {
           if (!result.error) {
             resolve(result);
