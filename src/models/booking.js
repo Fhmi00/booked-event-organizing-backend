@@ -14,4 +14,19 @@ module.exports = {
           }
         });
     }),
+  getBookingByUserId: (userId) =>
+    new Promise((resolve, reject) => {
+      // SELECT * FROM product WHERE id = "123"
+      supabase
+        .from("booking")
+        .select(`*, bookingSection (*)`)
+        .eq("userId", userId)
+        .then((result) => {
+          if (!result.error) {
+            resolve(result);
+          } else {
+            reject(result);
+          }
+        });
+    }),
 };

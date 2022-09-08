@@ -39,4 +39,33 @@ module.exports = {
       return wrapper.response(response, status, statusText, errorData);
     }
   },
+  getBookingByUserId: async (request, response) => {
+    try {
+      const { id } = request.params;
+      const result = await bookingModel.getBookingByUserId(id);
+
+      if (result.data.length < 1) {
+        return wrapper.response(
+          response,
+          404,
+          `Data By Id ${id} Not Found`,
+          []
+        );
+      }
+
+      return wrapper.response(
+        response,
+        result.status,
+        "Success Get Data By Id",
+        result.data
+      );
+    } catch (error) {
+      const {
+        status = 500,
+        statusText = "Internal Server Error",
+        error: errorData = null,
+      } = error;
+      return wrapper.response(response, status, statusText, errorData);
+    }
+  },
 };
