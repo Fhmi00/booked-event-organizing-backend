@@ -8,6 +8,7 @@ const userRoutes = require("./user");
 const wishlistRoutes = require("./wishlist");
 const bookingRoutes = require("./booking");
 const sectionRoutes = require("./bookingSection");
+const authRoutes = require("./auth");
 
 // Router.get("/greetings", (request, response) => {
 //   response.status(200).send("Hello World!");
@@ -19,5 +20,6 @@ Router.use("/user", userRoutes);
 Router.use("/wishlist", wishlistRoutes);
 Router.use("/booking", bookingRoutes);
 Router.use("/section", sectionRoutes);
+Router.use("/auth", authRoutes);
 
 module.exports = Router;
