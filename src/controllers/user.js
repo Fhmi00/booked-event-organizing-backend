@@ -1,5 +1,6 @@
 const userModel = require("../models/user");
 const wrapper = require("../utils/wrapper");
+const cloudinary = require("../config/cloudinary");
 
 module.exports = {
   getAllUser: async (request, response) => {
@@ -34,7 +35,7 @@ module.exports = {
         email,
         password,
       } = request.body;
-      const setData = {
+      let setData = {
         name,
         username,
         gender,
@@ -44,6 +45,10 @@ module.exports = {
         email,
         password,
       };
+      if (request.file) {
+        const { filename } = request.file;
+        setData = { ...setData, image: filename || "" };
+      }
 
       const result = await userModel.createUser(setData);
 
@@ -110,6 +115,13 @@ module.exports = {
         );
       }
 
+      let image;
+      if (request.file) {
+        const { filename } = request.file;
+        image = filename;
+        cloudinary.uploader.destroy(checkId.data[0].image, () => {});
+      }
+
       const setData = {
         name,
         username,
@@ -117,6 +129,7 @@ module.exports = {
         profession,
         nationality,
         dateOfBirth,
+        image,
       };
 
       const result = await userModel.updateUser(id, setData);

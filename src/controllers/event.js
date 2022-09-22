@@ -126,12 +126,12 @@ module.exports = {
       if (request.file) {
         const { filename } = request.file;
         image = filename;
-        cloudinary.uploader.destroy(checkId.data[0].image, (result) => {
-          console.log(result);
+        cloudinary.uploader.destroy(checkId.data[0].image, () => {
+          // console.log(result);
         });
       }
 
-      console.log(checkId.data[0].image);
+      // console.log(checkId.data[0].image);
 
       const setData = {
         name,
