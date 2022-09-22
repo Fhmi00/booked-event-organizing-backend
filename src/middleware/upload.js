@@ -17,20 +17,14 @@ module.exports = {
       limits: { fileSize: 512000 },
       // eslint-disable-next-line consistent-return
       fileFilter(req, file, callback) {
-        // const ext = path.extname(file.originalname);
-        if (
-          file.mimetype !== ".png" &&
-          file.mimetype !== ".jpg" &&
-          file.mimetype !== ".gif" &&
-          file.mimetype !== ".jpeg"
-        ) {
+        const ext = file.mimetype.split("/")[1];
+        if (ext !== "png" && ext !== "jpg" && ext !== "gif" && ext !== "jpeg") {
           return callback(new Error("Only images are allowed"));
         }
         callback(null, true);
       },
     }).single("image");
 
-    // eslint-disable-next-line consistent-return
     upload(request, response, (err) => {
       if (err instanceof multer.MulterError) {
         // A Multer error occurred when uploading.

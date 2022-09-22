@@ -1,5 +1,6 @@
 const eventModel = require("../models/event");
 const wrapper = require("../utils/wrapper");
+const cloudinary = require("../config/cloudinary");
 
 module.exports = {
   getAllEvent: async (request, response) => {
@@ -72,7 +73,8 @@ module.exports = {
       // console.log(request.body);
       const { name, category, location, detail, dateTimeShow, price } =
         request.body;
-      const setData = {
+
+      let setData = {
         name,
         category,
         location,
@@ -80,7 +82,10 @@ module.exports = {
         dateTimeShow,
         price,
       };
-
+      if (request.file) {
+        const { filename } = request.file;
+        setData = { ...setData, image: filename || "" };
+      }
       const result = await eventModel.createEvent(setData);
 
       return wrapper.response(
@@ -116,12 +121,25 @@ module.exports = {
         );
       }
 
+      let image;
+
+      if (request.file) {
+        const { filename } = request.file;
+        image = filename;
+        cloudinary.uploader.destroy(checkId.data[0].image, (result) => {
+          console.log(result);
+        });
+      }
+
+      console.log(checkId.data[0].image);
+
       const setData = {
         name,
         category,
         location,
         detail,
         price,
+        image,
       };
 
       const result = await eventModel.updateEvent(id, setData);
@@ -147,9 +165,9 @@ module.exports = {
       // 1.a. jika tidak ada maka akan mengembalikan id tidak ada di database
       // 1.b. jika ada maka akan menjalankan proses delete
       const { id } = request.params;
-      const result = await eventModel.deleteEvent(id);
+      const checkId = await eventModel.getEventById(id);
 
-      if (result.data.length < 1) {
+      if (checkId.data.length < 1) {
         return wrapper.response(
           response,
           404,
@@ -157,11 +175,16 @@ module.exports = {
           []
         );
       }
+      cloudinary.uploader.destroy(checkId.data[0].image, (result) => {
+        console.log(result);
+      });
+
+      const result = await eventModel.deleteEvent(id);
       return wrapper.response(
         response,
         200,
         "Success Delete Data",
-        "Hello World !"
+        result.data
       );
     } catch (error) {
       const {
@@ -169,6 +192,7 @@ module.exports = {
         statusText = "Internal Server Error",
         error: errorData = null,
       } = error;
+      console.log(error);
       return wrapper.response(response, status, statusText, errorData);
     }
   },
