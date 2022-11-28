@@ -14,21 +14,26 @@ module.exports = {
           }
         });
     }),
-  getAllEvent: (offset, limit, name) =>
+  getAllEvent: (offset, limit, sortColumn, sortType, name, day, nextDay) =>
     new Promise((resolve, reject) => {
-      supabase
+      const req = supabase
         .from("event")
         .select("*")
         .range(offset, offset + limit - 1)
-        .ilike(`name, %${name}%`)
-        .order("created_at", { ascending: false })
-        .then((result) => {
-          if (!result.error) {
-            resolve(result);
-          } else {
-            reject(result);
-          }
-        });
+        .ilike("name", `%${name}%`)
+        .order(sortColumn, { ascending: sortType });
+      if (day) {
+        req
+          .gt("dateTimeShow", `${day.toISOString()}`)
+          .lt("dateTimeShow", `${nextDay.toISOString()}`);
+      }
+      req.then((result) => {
+        if (!result.error) {
+          resolve(result);
+        } else {
+          reject(result);
+        }
+      });
     }),
   getEventById: (id) =>
     new Promise((resolve, reject) => {

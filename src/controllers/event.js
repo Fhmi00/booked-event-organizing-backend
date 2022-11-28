@@ -1,13 +1,50 @@
+/* eslint-disable prefer-destructuring */
+const admin = require("firebase-admin");
 const eventModel = require("../models/event");
 const wrapper = require("../utils/wrapper");
+const client = require("../config/redis");
 const cloudinary = require("../config/cloudinary");
+const serviceAccount = require("../resources/my-ticks-firebase-adminsdk-agfuz-7ae4a5ba71.json");
+
+const app = express();
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
+app.post("/payment", (req, res) => {
+  const dataUser = {
+    fullName: "Wahyono",
+  };
+
+  const dataTransaction = {
+    currentBalance: "Rp. 500.000",
+    amount: "Rp. 5000",
+  };
+
+  const message = {
+    notification: {
+      title: `Payment Successfully, Kamu udah ngirim ke ${dataUser.fullName}`,
+      body: `Kamu ngirim sebesar ${dataTransaction.amount}`,
+    },
+  };
+  getMessaging()
+    .send(message)
+    .then((response) => {
+      // Response is a message ID string.
+      console.log("Successfully sent message:", response);
+    })
+    .catch((error) => {
+      console.log("Error sending message:", error);
+    });
+});
 
 module.exports = {
   getAllEvent: async (request, response) => {
     try {
       //   console.log(request.query);
       // eslint-disable-next-line prefer-const
-      let { page, limit, name } = request.query;
+      let { page, limit, sort, searchDateShow, searchName } = request.query;
       page = +page;
       limit = +limit;
 
@@ -22,7 +59,41 @@ module.exports = {
 
       const offset = page * limit - limit;
 
-      const result = await eventModel.getAllEvent(offset, limit, name);
+      let sortColumn = "dateTimeShow";
+      let sortType = "asc";
+      if (sort) {
+        sortColumn = sort.split(" ")[0];
+        sortType = sort.split(" ")[1];
+      }
+      if (sortType.toLowerCase() === "asc") {
+        sortType = true;
+      } else {
+        sortType = false;
+      }
+
+      let day;
+      let nextDay;
+      if (searchDateShow) {
+        day = new Date(searchDateShow);
+        nextDay = new Date(new Date(day).setDate(day.getDate() + 1));
+      }
+
+      const result = await eventModel.getAllEvent(
+        offset,
+        limit,
+        sortColumn,
+        sortType,
+        searchName,
+        day,
+        nextDay
+      );
+
+      client.setEx(
+        `getProduct:${JSON.stringify(request.query)}`,
+        3600,
+        JSON.stringify({ result: result.data, pagination })
+      );
+
       return wrapper.response(
         response,
         result.status,
@@ -196,4 +267,39 @@ module.exports = {
       return wrapper.response(response, status, statusText, errorData);
     }
   },
+  // admin.initializeApp({
+  //   credential: admin.credential.cert(serviceAccount),
+  // });
+
+  // app.post("/payment", (req, res) => {
+  //   const dataUser = {
+  //     fullName: "dwiki setyawan",
+  //   };
+
+  //   const dataTransaction = {
+  //     amount: "Rp 5000",
+  //   };
+
+  //   const condition = "'stock-GOOG' in topics || 'industry-tech' in topics";
+
+  //   const message = {
+  //     notification: {
+  //       title: payment success, kamu udah ngirim ke ${dataUser.fullName},
+  //       body: kamu mengirim sebesar${dataTransaction.amount}.,
+  //     },
+  //     condition,
+  //   };
+
+  //   // Send a message to devices subscribed to the combination of topics
+  //   // specified by the provided condition.
+  //   getMessaging()
+  //     .send(message)
+  //     .then((response) => {
+  //       // Response is a message ID string.
+  //       console.log("Successfully sent message:", response);
+  //     })
+  //     .catch((error) => {
+  //       console.log("Error sending message:", error);
+  //     });
+  // });
 };
