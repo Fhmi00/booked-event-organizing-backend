@@ -1,9 +1,10 @@
-/* eslint-disable consistent-return */
+/* eslint-disable prefer-destructuring */
 const jwt = require("jsonwebtoken");
-const client = require("../config/redis");
 const wrapper = require("../utils/wrapper");
+const client = require("../config/redis");
 
 module.exports = {
+  // eslint-disable-next-line consistent-return
   authentication: async (request, response, next) => {
     try {
       let token = request.headers.authorization;
@@ -12,7 +13,6 @@ module.exports = {
         return wrapper.response(response, 403, "Please Login First", null);
       }
 
-      // eslint-disable-next-line prefer-destructuring
       token = token.split(" ")[1];
       const checkTokenBlacklist = await client.get(`accessToken:${token}`);
       // console.log(checkTokenBlacklist);
@@ -38,20 +38,27 @@ module.exports = {
         //     exp: 1662783052
         //   }
         request.decodeToken = result; // digunakan untuk menyiman data di dalam request
-        next();
+        return next();
       });
     } catch (error) {
-      console.log(error);
+      return error.error;
     }
   },
+
   isAdmin: async (request, response, next) => {
     try {
       // PROSES UNTUK PENGECEKAN ROLE
-      console.log(request.decodeToken);
-
-      next();
+      if (request.decodeToken.role.toLowerCase() !== "admin") {
+        return wrapper.response(
+          response,
+          403,
+          "Sorry, Only Admin Can Allowed to Access This Request",
+          null
+        );
+      }
+      return next();
     } catch (error) {
-      console.log(error);
+      return error.error;
     }
   },
 };

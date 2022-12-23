@@ -20,9 +20,9 @@ module.exports = {
         .from("wishlist")
         .select(
           `*,
-        event:eventId (name)`
+        event(*)`
         )
-        .eq("userId", id)
+        .match({ userId: id })
         .range(offset, offset + limit - 1)
         .then((result) => {
           if (!result.error) {
@@ -42,6 +42,24 @@ module.exports = {
         event:eventId (name)`
         )
         .eq("id", id)
+        .then((result) => {
+          if (!result.error) {
+            resolve(result);
+          } else {
+            reject(result);
+          }
+        });
+    }),
+  getWishlistByEventId: (eventId, userId) =>
+    new Promise((resolve, reject) => {
+      supabase
+        .from("wishlist")
+        .select(
+          `*,
+        event(*)`
+        )
+        .eq("eventId", eventId)
+        .eq("userId", userId)
         .then((result) => {
           if (!result.error) {
             resolve(result);
