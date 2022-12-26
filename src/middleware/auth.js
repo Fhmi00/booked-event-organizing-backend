@@ -2,6 +2,7 @@
 const jwt = require("jsonwebtoken");
 const wrapper = require("../utils/wrapper");
 const client = require("../config/redis");
+require("dotenv").config();
 
 module.exports = {
   // eslint-disable-next-line consistent-return
@@ -25,7 +26,7 @@ module.exports = {
           null
         );
       }
-
+      console.log(process.env.ACCESS_KEYS);
       jwt.verify(token, process.env.ACCESS_KEYS, (error, result) => {
         if (error) {
           return wrapper.response(response, 403, error.message, null);
