@@ -186,7 +186,7 @@ module.exports = {
   },
   updateImage: async (request, response) => {
     try {
-      const { id } = request.decodeToken;
+      const { id } = request.params;
       const checkId = await userModel.getUserById(id);
       if (checkId.data.length < 1) {
         return wrapper.response(
@@ -196,6 +196,8 @@ module.exports = {
           []
         );
       }
+
+      console.log(id);
 
       let image;
       if (request.file) {
