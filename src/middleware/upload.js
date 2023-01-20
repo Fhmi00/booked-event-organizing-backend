@@ -15,7 +15,7 @@ module.exports = {
 
     const upload = multer({
       storage,
-      limits: { fileSize: 512000 },
+      limits: { fileSize: 2048000 },
       // eslint-disable-next-line consistent-return
       fileFilter(req, file, callback) {
         const ext = file.mimetype.split("/")[1];
