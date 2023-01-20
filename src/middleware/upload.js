@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const wrapper = require("../utils/wrapper");
