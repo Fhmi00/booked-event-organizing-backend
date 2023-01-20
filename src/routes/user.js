@@ -27,7 +27,7 @@ Router.patch(
 
 // UPDATE IMAGE
 Router.patch(
-  "/updateImage",
+  "/updateImage/:id",
   authMiddleware.authentication,
   uploadUser.uploadUser,
   userController.updateImage
