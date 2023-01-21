@@ -24,16 +24,16 @@ module.exports = {
 
       const offset = page * limit - limit;
 
-      let sortColumn = "dateTimeShow";
-      let sortType = "asc";
+      // PROSES SET SORTING
+      const sortColumn = "dateTimeShow";
+      let sortType = true;
       if (sort) {
-        sortColumn = sort.split(" ")[0];
-        sortType = sort.split(" ")[1];
-      }
-      if (sortType.toLowerCase() === "asc") {
-        sortType = true;
-      } else {
-        sortType = false;
+        if (sort.toLowerCase() === "asc") {
+          sortType = true;
+          console.log("cek1");
+        } else {
+          sortType = false;
+        }
       }
 
       let day;
