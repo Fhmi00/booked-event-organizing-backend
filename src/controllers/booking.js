@@ -11,7 +11,7 @@ module.exports = {
       const { eventId, totalPayment, paymentMethod, statusPayment, section } =
         request.body;
 
-      const { userId } = request.decodeToken;
+      const { userId } = request.params;
       const totalTicket = section.length;
 
       const setBooking = {
@@ -63,7 +63,7 @@ module.exports = {
   },
   getBookingByUserId: async (request, response) => {
     try {
-      const { userId } = request.decodeToken;
+      const { userId } = request.params;
 
       const result = await bookingModel.getBookingByUserId(userId);
       if (result.data.length < 1) {
