@@ -30,7 +30,7 @@ module.exports = {
       if (sort) {
         if (sort.toLowerCase() === "asc") {
           sortType = true;
-          console.log("cek1");
+          // console.log("cek1");
         } else {
           sortType = false;
         }

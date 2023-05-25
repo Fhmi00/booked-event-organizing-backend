@@ -1,8 +1,8 @@
 const redis = require("redis");
 
-const redisPassword = "RP7EGksTyEc7J8VQVMcTtQWSKAFhXvPK";
-const redisHost = "redis-11697.c10.us-east-1-3.ec2.cloud.redislabs.com";
-const redisPort = "11697";
+const redisPassword = "LjR8gfpnHd1ScFkyv7dycfMeLh1uiuQa";
+const redisHost = "redis-11026.c270.us-east-1-3.ec2.cloud.redislabs.com";
+const redisPort = "11026";
 
 const client = redis.createClient({
   socket: {
