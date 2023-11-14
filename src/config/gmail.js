@@ -1,10 +1,10 @@
 const { google } = require("googleapis");
 
 const clientId =
-  "1071820962566-5gftglffuib3vvi2j1eqmqb292ccbu0l.apps.googleusercontent.com";
-const clientSecret = "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";
+  "435108553073-g2nonsqbiql6mvt6e5sdoicd9ggtdi2i.apps.googleusercontent.com";
+const clientSecret = "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";
 const refreshToken =
-  "1//04J7gtTb7BdrvCgYIARAAGAQSNwF-L9IrXHauthwuWWYFrsVLotlmqKm3Zha_aD0248LccCRmbaPJ1Z-mK--GMrfPYovee1Zlvrw";
+  "1//04d7T7AvromU9CgYIARAAGAQSNwF-L9IrppD3KvTLtaoNHZs1T_YitS8qnhk7umz3U208w5jNR36326MAawNNP2fQEt06AODmD1s";
 
 const { OAuth2 } = google.auth;
 const OAuth2Client = new OAuth2(clientId, clientSecret);
