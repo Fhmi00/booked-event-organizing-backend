@@ -10,7 +10,7 @@ module.exports = {
         service: "gmail",
         auth: {
           type: "OAuth2",
-          user: "bnav245@gmail.com",
+          user: "ifahmi5555@gmail.com",
           clientId: gmail.clientId,
           clientSecret: gmail.clientSecret,
           refreshToken: gmail.refreshToken,
@@ -23,7 +23,7 @@ module.exports = {
         "utf8"
       );
       const mailOptions = {
-        from: '"Event Organizing" <bnav245@gmail.com>',
+        from: '"Event Organizing" <ifahmi5555@gmail.com>',
         to: data.to,
         subject: data.subject,
         html: mustache.render(fileTemplate, { ...data }),
@@ -43,7 +43,7 @@ module.exports = {
         service: "gmail",
         auth: {
           type: "OAuth2",
-          user: "bnav245@gmail.com",
+          user: "ifahmi5555@gmail.com",
           clientId: gmail.clientId,
           clientSecret: gmail.clientSecret,
           refreshToken: gmail.refreshToken,
@@ -56,7 +56,7 @@ module.exports = {
         "utf8"
       );
       const mailOptions = {
-        from: '"Event Organizing" <bnav245@gmail.com>',
+        from: '"Event Organizing" <ifahmi5555@gmail.com>',
         to: data.to,
         subject: data.subject,
         html: mustache.render(fileTemplate, { ...data }),
