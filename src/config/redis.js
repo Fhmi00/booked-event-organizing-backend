@@ -1,8 +1,9 @@
 const redis = require("redis");
+require("dotenv").config();
 
-const redisPassword = "u0dWuJZtbl2DbTDhJA4M8bfmMqN8sULk";
-const redisHost = "redis-11470.c326.us-east-1-3.ec2.cloud.redislabs.com";
-const redisPort = "11470";
+const redisPassword = process.env.REDIS_PASSWORD;
+const redisHost = process.env.REDIS_HOST;
+const redisPort = process.env.REDIS_PORT;
 
 const client = redis.createClient({
   socket: {
@@ -17,6 +18,7 @@ const client = redis.createClient({
   client.on("connect", () => {
     // eslint-disable-next-line no-console
     console.log("You're connected db redis ...");
+    console.log(redisHost);
   });
 })();
 
